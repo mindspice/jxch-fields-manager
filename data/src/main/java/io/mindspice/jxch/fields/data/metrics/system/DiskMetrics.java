@@ -1,4 +1,4 @@
-package io.mindspice.jxch.fields.data.system;
+package io.mindspice.jxch.fields.data.metrics.system;
 
 import io.mindspice.jxch.fields.data.util.DataUtil;
 

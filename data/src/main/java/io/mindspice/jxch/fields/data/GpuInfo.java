@@ -1,6 +1,6 @@
 package io.mindspice.jxch.fields.data;
 
-import io.mindspice.jxch.fields.data.system.GpuMetrics;
+import io.mindspice.jxch.fields.data.metrics.system.GpuMetrics;
 import io.mindspice.jxch.fields.data.util.DataUtil;
 
 import java.util.ArrayList;
@@ -41,14 +41,14 @@ public class GpuInfo {
         return new GpuMetrics(
                 deviceId,
                 deviceName,
-                DataUtil.limitPrecision(utilizationSummary.getAverage()),
-                DataUtil.limitPrecision(utilizationSummary.getMax()),
-                DataUtil.limitPrecision(memoryTotalSummary.getAverage()),
-                DataUtil.limitPrecision(memoryTotalSummary.getMax()),
-                DataUtil.limitPrecision(memoryUsedSummary.getAverage()),
-                DataUtil.limitPrecision(memoryUsedSummary.getMax()),
-                DataUtil.limitPrecision(temperatureSummary.getAverage()),
-                DataUtil.limitPrecision(temperatureSummary.getMax())
+                DataUtil.limitPrecision2D(utilizationSummary.getAverage()),
+                DataUtil.limitPrecision2D(utilizationSummary.getMax()),
+                DataUtil.limitPrecision2D(memoryTotalSummary.getAverage()),
+                DataUtil.limitPrecision2D(memoryTotalSummary.getMax()),
+                DataUtil.limitPrecision2D(memoryUsedSummary.getAverage()),
+                DataUtil.limitPrecision2D(memoryUsedSummary.getMax()),
+                DataUtil.limitPrecision2D(temperatureSummary.getAverage()),
+                DataUtil.limitPrecision2D(temperatureSummary.getMax())
         );
     }
 }

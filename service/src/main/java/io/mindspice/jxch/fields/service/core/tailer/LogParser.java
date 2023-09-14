@@ -1,10 +1,9 @@
 package io.mindspice.jxch.fields.service.core.tailer;
 
-import io.mindspice.jxch.fields.data.chia.SignagePointMetrics;
-import io.mindspice.jxch.fields.data.chia.node.BlockInfo;
-import io.mindspice.jxch.fields.data.chia.node.MempoolMetrics;
-import io.mindspice.jxch.fields.data.chia.node.SignagePointState;
-import io.mindspice.jxch.fields.data.chia.node.SubSlotInfo;
+import io.mindspice.jxch.fields.data.chia.BlockInfo;
+import io.mindspice.jxch.fields.data.metrics.chia.MempoolMetrics;
+import io.mindspice.jxch.fields.data.chia.SignagePointInfo;
+import io.mindspice.jxch.fields.data.chia.SubSlotInfo;
 import io.mindspice.jxch.fields.data.enums.OsType;
 
 import io.mindspice.jxch.fields.data.enums.PoolErrorCode;
@@ -24,7 +23,7 @@ import java.util.regex.Matcher;
 
 public class LogParser {
     private final MonitorState monitorState;
-    private final Map<Integer, SignagePointState> subSlotMap = new HashMap<>(64);
+    private final Map<Integer, SignagePointInfo> subSlotMap = new HashMap<>(64);
     private Tailer tailer;
     private volatile SubSlotInfo currentSubSlot = new SubSlotInfo();
 
@@ -84,7 +83,7 @@ public class LogParser {
                 if (spIndex.find()) {
                     int index = Integer.parseInt(spIndex.group(1));
                     LocalDateTime dateTime = getDateTime(line);
-                    subSlotMap.put(index, new SignagePointState(index, dateTime));
+                    subSlotMap.put(index, new SignagePointInfo(index, dateTime));
                 }
                 return;
             }
@@ -104,13 +103,13 @@ public class LogParser {
                 Matcher block = LogPatterns.NON_FARMED_BLOCK.matcher(line);
                 if (block.find()) {
                     Integer idx = Integer.valueOf(block.group(1));
-                    BlockInfo blockInfo = new BlockInfo(
-                            false,
-                            Float.parseFloat(block.group(2)),
-                            Float.parseFloat(block.group(3)),
-                            Long.parseLong(block.group(4)),
-                            Float.parseFloat(block.group(5))
-                    );
+//                    BlockInfo blockInfo = new BlockInfo(
+//                            false,
+//                            Float.parseFloat(block.group(2)),
+//                            Float.parseFloat(block.group(3)),
+//                            Long.parseLong(block.group(4)),
+//                            Float.parseFloat(block.group(5))
+//                    );
                     var spInfo = subSlotMap.get(idx);
                     // if (spInfo != null) { spInfo.addBlockInfo(blockInfo); }
                 }
@@ -137,11 +136,11 @@ public class LogParser {
                 Matcher farmedBlock = LogPatterns.FARMED_BLOCK.matcher(line);
                 if (farmedBlock.find()) {
                     Integer idx = Integer.parseInt(farmedBlock.group(1));
-                    BlockInfo blockInfo = new BlockInfo(
-                            false,
-                            Float.parseFloat(farmedBlock.group(2)),
-                            Long.parseLong(farmedBlock.group(3))
-                    );
+//                    BlockInfo blockInfo = new BlockInfo(
+//                            false,
+//                            Float.parseFloat(farmedBlock.group(2)),
+//                            Long.parseLong(farmedBlock.group(3))
+//                    );
                 }
                 return;
             }
@@ -167,13 +166,13 @@ public class LogParser {
             if (line.contains("eligible for farming")) {
                 Matcher eligiblePlots = LogPatterns.ELIGIBLE_PLOTS.matcher(line);
                 if (eligiblePlots.find()) {
-                    SignagePointState sp;
-                    SignagePointMetrics spMetrics = sp.getAsMetrics(
-                            Integer.parseInt(eligiblePlots.group(1)),
-                            Integer.parseInt(eligiblePlots.group(2)),
-                            Float.parseFloat(eligiblePlots.group(3)),
-                            Integer.parseInt(eligiblePlots.group(4))
-                    );
+                    SignagePointInfo sp;
+//                    SignagePointMetrics spMetrics = sp.getAsMetrics(
+//                            Integer.parseInt(eligiblePlots.group(1)),
+//                            Integer.parseInt(eligiblePlots.group(2)),
+//                            Float.parseFloat(eligiblePlots.group(3)),
+//                            Integer.parseInt(eligiblePlots.group(4))
+//                    );
 
                 }
             }

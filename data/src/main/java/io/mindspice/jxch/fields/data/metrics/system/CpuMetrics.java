@@ -1,4 +1,4 @@
-package io.mindspice.jxch.fields.data.system;
+package io.mindspice.jxch.fields.data.metrics.system;
 
 import io.mindspice.jxch.fields.data.util.DataUtil;
 
@@ -22,9 +22,9 @@ public record CpuMetrics(
                 avgCoreUsage,
                 maxCoreUsage,
                 coreFrequencies,
-                DataUtil.limitPrecision(Arrays.stream(avgCoreUsage).average().orElse(0.00)),
-                DataUtil.limitPrecision(Arrays.stream(maxCoreUsage).average().orElse(0.00)),
-                DataUtil.limitPrecision(Arrays.stream(coreFrequencies).average().orElse(0.00)),
+                DataUtil.limitPrecision2D(Arrays.stream(avgCoreUsage).average().orElse(0.00)),
+                DataUtil.limitPrecision2D(Arrays.stream(maxCoreUsage).average().orElse(0.00)),
+                DataUtil.limitPrecision2D(Arrays.stream(coreFrequencies).average().orElse(0.00)),
                 temperature,
                 threadCount,
                 processCount

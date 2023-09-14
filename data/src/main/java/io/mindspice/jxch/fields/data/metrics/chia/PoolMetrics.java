@@ -1,4 +1,4 @@
-package io.mindspice.jxch.fields.data.chia.farmer;
+package io.mindspice.jxch.fields.data.metrics.chia;
 
 public record PoolMetrics(
         String launcherId,

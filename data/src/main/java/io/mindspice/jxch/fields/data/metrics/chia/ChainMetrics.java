@@ -1,4 +1,4 @@
-package io.mindspice.jxch.fields.data.chia.node;
+package io.mindspice.jxch.fields.data.metrics.chia;
 
 import io.mindspice.jxch.fields.data.util.DataUtil;
 

@@ -3,23 +3,21 @@ package io.mindspice.jxch.fields.service.core;
 import io.mindspice.jxch.fields.data.GpuInfo;
 import io.mindspice.jxch.fields.data.enums.GpuVendor;
 import io.mindspice.jxch.fields.data.enums.OsType;
-import io.mindspice.jxch.fields.data.system.CpuMetrics;
-import io.mindspice.jxch.fields.data.system.DiskMetrics;
-import io.mindspice.jxch.fields.data.system.GpuMetrics;
-import io.mindspice.jxch.fields.data.system.MemoryMetrics;
+import io.mindspice.jxch.fields.data.metrics.system.CpuMetrics;
+import io.mindspice.jxch.fields.data.metrics.system.DiskMetrics;
+import io.mindspice.jxch.fields.data.metrics.system.GpuMetrics;
+import io.mindspice.jxch.fields.data.metrics.system.MemoryMetrics;
 import io.mindspice.jxch.fields.data.util.DataUtil;
 import io.mindspice.jxch.fields.data.util.Pair;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
-import oshi.software.os.OSFileStore;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -98,7 +96,7 @@ public class SystemMonitor {
             }
 
             for (int i = 0; i < avgUsage.length; ++i) {
-                avgUsage[i] = DataUtil.limitPrecision(avgUsage[i] / cpuUsage.size());
+                avgUsage[i] = DataUtil.limitPrecision2D(avgUsage[i] / cpuUsage.size());
             }
             cpuUsage.clear();
             return new double[][]{avgUsage, maxUsage};
@@ -114,13 +112,13 @@ public class SystemMonitor {
     public double[] getCoreFrequencies() { return DataUtil.hzToGhz(cpu.getCurrentFreq()); }
 
     public MemoryMetrics getMemoryMetrics() {
-        double totalMemory = DataUtil.limitPrecision(DataUtil.bytesToGiB(memory.getTotal()));
-        double freeMemory = DataUtil.limitPrecision(DataUtil.bytesToGiB(memory.getAvailable()));
-        double totalSwap = DataUtil.limitPrecision(DataUtil.bytesToGiB(memory.getVirtualMemory().getSwapTotal()));
-        double usedSwap = DataUtil.limitPrecision(DataUtil.bytesToGiB(memory.getVirtualMemory().getSwapUsed()));
+        double totalMemory = DataUtil.limitPrecision2D(DataUtil.bytesToGiB(memory.getTotal()));
+        double freeMemory = DataUtil.limitPrecision2D(DataUtil.bytesToGiB(memory.getAvailable()));
+        double totalSwap = DataUtil.limitPrecision2D(DataUtil.bytesToGiB(memory.getVirtualMemory().getSwapTotal()));
+        double usedSwap = DataUtil.limitPrecision2D(DataUtil.bytesToGiB(memory.getVirtualMemory().getSwapUsed()));
         return new MemoryMetrics(
                 totalMemory,
-                DataUtil.limitPrecision(totalMemory - freeMemory),
+                DataUtil.limitPrecision2D(totalMemory - freeMemory),
                 totalSwap,
                 usedSwap
         );

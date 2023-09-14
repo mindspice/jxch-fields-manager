@@ -1,4 +1,4 @@
-package io.mindspice.jxch.fields.data;
+package io.mindspice.jxch.fields.data.structures;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,19 +22,19 @@ public class CircularQueue<T> {
         this.size = 0;
     }
 
-    public synchronized boolean isEmpty() {
+    public boolean isEmpty() {
         return size == 0;
     }
 
-    public synchronized boolean isFull() {
+    public boolean isFull() {
         return size == capacity;
     }
 
-    public synchronized List<T> ListView() {
+    public List<T> ListView() {
         return Collections.unmodifiableList(buffer);
     }
 
-    public synchronized void add(T element) {
+    public void add(T element) {
         if (element == null) {
             throw new IllegalArgumentException("Cannot add null to the queue");
         }
@@ -50,7 +50,7 @@ public class CircularQueue<T> {
         size++;
     }
 
-    public synchronized Optional<T> poll() {
+    public Optional<T> poll() {
         if (isEmpty()) {
             return Optional.empty();
         }
@@ -60,18 +60,18 @@ public class CircularQueue<T> {
         return Optional.of(element);
     }
 
-    public synchronized Optional<T> peek() {
+    public Optional<T> peek() {
         if (isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(buffer.get(head));
     }
 
-    public synchronized void poll(Consumer<T> consumer) {
+    public void poll(Consumer<T> consumer) {
         poll().ifPresent(consumer);
     }
 
-    public synchronized void peek(Consumer<T> consumer) {
+    public void peek(Consumer<T> consumer) {
         peek().ifPresent(consumer);
     }
 }

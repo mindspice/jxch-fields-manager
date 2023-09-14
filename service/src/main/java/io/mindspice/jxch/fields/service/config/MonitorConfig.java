@@ -12,11 +12,12 @@ public class MonitorConfig {
     private String pathToNodeConfig = "";
     private boolean doLogParsing = true;
     private String pathToLog = "";
-    private int maxHistorySize = 1440;
+    private int maxChiaHistorySize = 1440;
+    private int maxSystemHistorySize = 1440;
     private List<String> harvesterConfigs;
     private boolean doHDDCheck;
 
-    public String NodeName() {
+    public String getNodeName() {
         return nodeName;
     }
 
@@ -28,7 +29,7 @@ public class MonitorConfig {
         return doWebService;
     }
 
-    public String WebServiceApiKey() {
+    public String getWebServiceApiKey() {
         return webServiceApiKey;
     }
 
@@ -36,7 +37,7 @@ public class MonitorConfig {
         return doSystemMetrics;
     }
 
-    public String PathToNodeConfig() {
+    public String getPathToNodeConfig() {
         return pathToNodeConfig;
     }
 
@@ -44,15 +45,19 @@ public class MonitorConfig {
         return doLogParsing;
     }
 
-    public String PathToLog() {
+    public String getPathToLog() {
         return pathToLog;
     }
 
-    public int MaxHistorySize() {
-        return maxHistorySize;
+    public int getMaxChiaHistorySize() {
+        return maxChiaHistorySize;
     }
 
-    public List<String> HarvesterConfigs() {
+    public int getMaxSystemHistorySize() {
+        return maxSystemHistorySize;
+    }
+
+    public List<String> getHarvesterConfigs() {
         return harvesterConfigs;
     }
 
