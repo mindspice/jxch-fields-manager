@@ -1,11 +1,12 @@
 package io.mindspice.jxch.fields.data.metrics.chia;
 
+import io.mindspice.jxch.fields.data.metrics.ClientMsg;
 import io.mindspice.jxch.fields.data.util.DataUtil;
 
 import java.math.BigInteger;
 
 
-public record ChainMetrics(
+public record ChainMetrics (
         int height,
         int difficulty,
         long weight,
@@ -13,7 +14,7 @@ public record ChainMetrics(
         boolean synced,
         boolean isSyncing,
         int syncedHeight
-) {
+) implements ClientMsg {
     public ChainMetrics(int height, int difficulty, long weight, BigInteger effectiveSpaceEiB, boolean synced,
             boolean isSyncing, int syncedHeight) {
         this(

@@ -1,0 +1,20 @@
+
+bindAddress: 0.0.0.0
+bindPort: 11992
+monitoredSystems:
+  - monitorName: "test
+    isHarvester: false
+    doWebService: false
+    doRpcMetrics: false
+    webServiceApiKey: null
+    doSystemMetrics: true
+    pathToNodeConfig: ""
+    doLogParsing: true
+    pathToLog: ""
+    maxChiaHistorySize: 1440
+    maxSystemHistorySize: 1440
+    maxSubSlotHistorySize: 144
+    maxErrorWarnHistorySize: 0
+    harvesterConfigs: []
+    doHDDCheck: false
+

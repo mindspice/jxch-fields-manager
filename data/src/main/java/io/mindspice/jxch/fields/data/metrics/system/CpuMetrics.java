@@ -1,5 +1,6 @@
 package io.mindspice.jxch.fields.data.metrics.system;
 
+import io.mindspice.jxch.fields.data.metrics.ClientMsg;
 import io.mindspice.jxch.fields.data.util.DataUtil;
 
 import java.util.Arrays;
@@ -15,7 +16,7 @@ public record CpuMetrics(
         int temperature,
         int threadCount,
         int processCount
-) {
+) implements ClientMsg {
     public CpuMetrics(double[] avgCoreUsage, double[] maxCoreUsage, double[] coreFrequencies,
             int temperature, int threadCount, int processCount) {
         this(

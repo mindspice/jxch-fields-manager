@@ -1,4 +1,4 @@
-package io.mindspice.jxch.fields.data.util;
+package io.mindspice.jxch.fields.data.structures;
 
 public record Pair<U, V>(U first, V second) {
     public static <U, V> Pair<U, V> of(U obj1, V obj2) {

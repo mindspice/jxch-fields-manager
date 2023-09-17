@@ -1,24 +1,22 @@
-package io.mindspice.jxch.fields.data.chia;
+package io.mindspice.jxch.fields.data.structures;
 
-import io.mindspice.jxch.fields.data.metrics.chia.FilterMetrics;
+import io.mindspice.jxch.fields.data.metrics.chia.SignagePointMetrics;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 
 public class SignagePointInfo {
     private final int index;
     private final LocalDateTime dateTime;
-    private FilterMetrics filterMetrics;
+    private SignagePointMetrics signagePointMetrics;
 
     public SignagePointInfo(int index, LocalDateTime dateTime) {
         this.index = index;
         this.dateTime = dateTime;
     }
 
-    public FilterMetrics getAsMetrics(int eligiblePlots, int proofsFound, float lookupTime, int totalPlots) {
-        filterMetrics = filterMetrics;
-        return new FilterMetrics(
+    public SignagePointMetrics getAsMetrics(int eligiblePlots, int proofsFound, float lookupTime, int totalPlots) {
+        return new SignagePointMetrics(
                 index,
                 dateTime,
                 eligiblePlots,
@@ -28,10 +26,6 @@ public class SignagePointInfo {
         );
     }
 
-//    public void addBlock(BlockInfo block) {
-//        if (blocks == null) { blocks = new ArrayList<>(3); }
-//        blocks.add(block);
-//    }
 
     public int getIndex() {
         return index;
@@ -40,6 +34,5 @@ public class SignagePointInfo {
     public LocalDateTime getDateTime() {
         return dateTime;
     }
-
 
 }

@@ -1,6 +1,10 @@
 package io.mindspice.jxch.fields.data.metrics.system;
 
+import io.mindspice.jxch.fields.data.metrics.ClientMsg;
+import io.mindspice.jxch.fields.data.structures.Pair;
 import io.mindspice.jxch.fields.data.util.DataUtil;
+
+import java.util.List;
 
 
 public record DiskMetrics(
@@ -8,4 +12,4 @@ public record DiskMetrics(
         String uuid,
         long totalSpace,
         long freeSpace
-) { }
+) implements ClientMsg { }

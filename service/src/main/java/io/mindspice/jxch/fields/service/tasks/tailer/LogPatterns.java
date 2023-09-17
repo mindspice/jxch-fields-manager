@@ -1,4 +1,4 @@
-package io.mindspice.jxch.fields.service.core.tailer;
+package io.mindspice.jxch.fields.service.tasks.tailer;
 
 import java.util.regex.Pattern;
 
@@ -17,7 +17,7 @@ public class LogPatterns {
     public static final Pattern FINISHED_SUB_SLOT = Pattern.compile("\\bDeficit\\s(\\d+)");
 
     // Get cached signage point index
-    public static final Pattern CACHED_SIGNAGE_POINT = Pattern.compile("(\\bcaching signage point)\\s(\\d+)");
+    public static final Pattern CACHED_SIGNAGE_POINT = Pattern.compile("\\bcaching signage point\\s(\\d+)");
 
     // Extracts 3 groups from a finished block {SP<int>, validation time<float>, cost<long>}
     public static final Pattern FARMED_BLOCK = Pattern.compile(
@@ -61,13 +61,15 @@ public class LogPatterns {
                     "tx:\\s(\\d+)"
     );
 
-    // Extract 4 groups from eligible plots {eligible plots<int>, proofs found found <int>, lookup time <float>, total plots<int>}
+    // Extract 4 groups from eligible plots {eligible plots<int>, proofs  found <int>, lookup time <float>, total plots<int>}
     public static final Pattern ELIGIBLE_PLOTS = Pattern.compile(
-            "(\\d+) plots were eligible " +
-                    ".* Found " +
-                    "(\\d+) proofs\\. Time: " +
-                    "(\\d+\\.\\d+) s\\. Total " +
-                    "(\\d+) plots"
+            "(\\d+)\\s+plots" +
+                    ".*" +
+                    "Found\\s+(\\d+)" +
+                    ".*" +
+                    "Time:\\s+([\\d.]+)\\s+" +
+                    ".*" +
+                    "Total\\s+(\\d+)"
     );
 
     //Extract pool error code

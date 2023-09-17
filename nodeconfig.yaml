@@ -1,0 +1,24 @@
+address: "192.168.1.177"
+crawlerPort: 8561
+dataLayerPort: 8561
+daemonPort: 55400
+fullNodePort: 8555
+farmerPort: 8559
+harvesterPort: 8560
+walletPort: 9256
+crawlerCrt: "/home/mindspice/.chia_certs/main_node/ssl/crawler/private_crawler.crt"
+crawlerKey: "/home/mindspice/.chia_certs/main_node/ssl/crawler/private_crawler.key"
+dataLayerCrt: "/home/mindspice/.chia_certs/main_node/ssl/data_layer/private_data_layer.crt"
+dataLayerKey: "/home/mindspice/.chia_certs/main_node/ssl/data_layer/private_data_layer.key"
+daemonCrt: "/home/mindspice/.chia_certs/main_node/ssl/daemon/private_daemon.crt"
+daemonKey: "/home/mindspice/.chia_certs/main_node/ssl/daemon/private_daemon.key"
+fullNodeCrt: "/home/mindspice/.chia_certs/main_node/ssl/full_node/private_full_node.crt"
+fullNodeKey: "/home/mindspice/.chia_certs/main_node/ssl/full_node/private_full_node.key"
+farmerCrt: "/home/mindspice/.chia_certs/main_node/ssl/farmer/private_farmer.crt"
+farmerKey: "/home/mindspice/.chia_certs/main_node/ssl/farmer/private_farmer.key"
+harvesterCrt: "/home/mindspice/.chia_certs/main_node/ssl/harvester/private_harvester.crt"
+harvesterKey: "/home/mindspice/.chia_certs/main_node/ssl/harvester/private_harvester.key"
+walletCrt: "/home/mindspice/.chia_certs/main_node/ssl/wallet/private_wallet.crt"
+walletKey: "/home/mindspice/.chia_certs/main_node/ssl/wallet/private_wallet.key"
+
+

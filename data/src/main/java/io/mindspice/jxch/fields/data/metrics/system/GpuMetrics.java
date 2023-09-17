@@ -1,5 +1,8 @@
 package io.mindspice.jxch.fields.data.metrics.system;
 
+import io.mindspice.jxch.fields.data.metrics.ClientMsg;
+
+
 public record GpuMetrics(
         int deviceId,
         String deviceName,
@@ -11,4 +14,4 @@ public record GpuMetrics(
         double memoryUsedMax,
         double temperatureAvg,
         double temperatureMax
-) { }
+)implements ClientMsg { }

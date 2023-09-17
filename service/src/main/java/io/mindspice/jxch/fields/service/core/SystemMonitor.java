@@ -2,21 +2,28 @@ package io.mindspice.jxch.fields.service.core;
 
 import io.mindspice.jxch.fields.data.GpuInfo;
 import io.mindspice.jxch.fields.data.enums.GpuVendor;
+import io.mindspice.jxch.fields.data.enums.MonitorMsgType;
 import io.mindspice.jxch.fields.data.enums.OsType;
+import io.mindspice.jxch.fields.data.metrics.chia.DisconnectedDisks;
+import io.mindspice.jxch.fields.data.metrics.chia.FarmingMetrics;
 import io.mindspice.jxch.fields.data.metrics.system.CpuMetrics;
 import io.mindspice.jxch.fields.data.metrics.system.DiskMetrics;
 import io.mindspice.jxch.fields.data.metrics.system.GpuMetrics;
 import io.mindspice.jxch.fields.data.metrics.system.MemoryMetrics;
+import io.mindspice.jxch.fields.data.network.MonitorOutMsg;
 import io.mindspice.jxch.fields.data.util.DataUtil;
-import io.mindspice.jxch.fields.data.util.Pair;
+import io.mindspice.jxch.fields.data.structures.Pair;
+import io.mindspice.jxch.fields.service.networking.FieldsServer;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
+import oshi.software.os.OSFileStore;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,7 +43,11 @@ public class SystemMonitor {
     private final List<double[]> cpuUsage = new ArrayList<>(75);
     private final Map<String, GpuInfo> gpuInfoMap;
 
-    public static SystemMonitor get() {
+    private volatile Map<String, DiskMetrics> lastActiveDisks;
+    private Map<String, DiskMetrics> missingDisks;
+    private List<Pair<DiskMetrics, Long>> diskDisconnectEvents;
+
+    public static SystemMonitor GET() {
         if (INSTANCE == null) { INSTANCE = new SystemMonitor(); }
         return INSTANCE;
     }
@@ -54,6 +65,7 @@ public class SystemMonitor {
                         Collectors.toMap(Pair::first, Pair::second),
                         Collections::unmodifiableMap));
         init();
+        System.out.println("Started system metrics monitor");
     }
 
     private void init() {
@@ -209,9 +221,53 @@ public class SystemMonitor {
     }
 
     public List<DiskMetrics> getDiskMetrics() {
-        return systemInfo.getOperatingSystem().getFileSystem().getFileStores().stream()
-                .map(fs -> new DiskMetrics(fs.getMount(), fs.getUUID(), fs.getTotalSpace(), fs.getFreeSpace()))
-                .toList();
+        Map<String, DiskMetrics> currDisks = systemInfo.getOperatingSystem().getFileSystem().getFileStores().stream()
+                .collect(Collectors.toMap(
+                        fs -> fs.getUUID().isEmpty() ? fs.getMount() : fs.getUUID(), // use mount if empty uuid
+                        fs -> new DiskMetrics(fs.getMount(), fs.getUUID(), fs.getTotalSpace(), fs.getFreeSpace()),
+                        (existing, replacement) -> replacement  // overwrite duplicates
+                ));
+        if (lastActiveDisks != null && !lastActiveDisks.keySet().equals(currDisks.keySet())) {
+
+            var missing = lastActiveDisks.entrySet().stream()
+                    .filter(d -> !currDisks.containsKey(d.getKey()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+            if (missingDisks == null) { missingDisks = new HashMap<>(); }
+            if (diskDisconnectEvents == null) { diskDisconnectEvents = new ArrayList<>(); }
+
+            synchronized (missingDisks) {
+                missingDisks.putAll(missing);
+                missingDisks.keySet().removeIf(currDisks::containsKey);
+            }
+
+            var disconnections = missing.values().stream()
+                    .map(d -> new Pair<>(d, Instant.now().getEpochSecond()))
+                    .toList();
+
+            var disconnDisks = new DisconnectedDisks(disconnections.stream().map(Pair::first).toList());
+            FieldsServer.GET().submitClientMsg(new MonitorOutMsg(MonitorMsgType.DISCONNECTED_DISKS, disconnDisks));
+
+            synchronized (diskDisconnectEvents) {
+                diskDisconnectEvents.addAll(disconnections);
+            }
+        }
+        lastActiveDisks = currDisks;
+        return new ArrayList<>(currDisks.values());
+    }
+
+    public Map<String, DiskMetrics> getLastActiveDisks() { return lastActiveDisks; }
+
+    public Map<String, DiskMetrics> getMissingDisks() {
+        synchronized (missingDisks) {
+            return missingDisks;
+        }
+    }
+
+    public List<Pair<DiskMetrics, Long>> getDiskDisconnectEvents() {
+        synchronized (diskDisconnectEvents) {
+            return diskDisconnectEvents;
+        }
     }
 }
 
